@@ -1,30 +1,41 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Reflection.Emit;
-using System.Text;
-using System.Text.RegularExpressions;
-
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="ValidEntry.cs" company="Bridgelabz">
+//   Copyright © 2018 Company
+// </copyright>
+// <creator Name="Aseem Anand"/>
+// --------------------------------------------------------------------------------------------------------------------
 namespace UserRegistrationUsingLambdaExp
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Reflection.Emit;
+    using System.Text;
+    using System.Text.RegularExpressions;
     public class ValidEntry
     {        
         private readonly List<UserDetails> userDetailsList = new List<UserDetails>();
 
         /// <summary>
-        /// Validates the first name of the or last.
+        /// UC 13 : Refactor to use Lambda Exp to validate user details
+        ///         Func AreValid declared which returns true if valid entry otherwise false. 
+        /// </summary>
+        public static Func<string, string, bool> AreValid = (userEntry,pattern) => Regex.IsMatch(userEntry, pattern);
+
+        /// <summary>
+        /// UC 1-2 : Validates the first name of the or last.
         /// </summary>
         /// <returns></returns>
         public string ValidateFirstOrLastName()
         {
             //Pattern for valid first or last name
-            string firstOrLastNamePattern = @"^[A-Z]{1}[a-zA-Z]{2,}$";
-            Regex regex = new Regex(firstOrLastNamePattern);
+            string firstOrLastNamePattern = @"^[A-Z]{1}[a-zA-Z]{2,}$";            
             while (true)
             {
                 //User input        
                 string firstOrLastName = Console.ReadLine();
                 //IF valid first or last name
-                if (regex.IsMatch(firstOrLastName))
+                if (AreValid(firstOrLastName,firstOrLastNamePattern))
                 {
                     Console.WriteLine("Thank you for entering a valid name");
                     return firstOrLastName;
@@ -38,21 +49,20 @@ namespace UserRegistrationUsingLambdaExp
         }
 
         /// <summary>
-        /// Validates the email.
+        /// UC 3 : Validates the email.
         /// </summary>
         /// <returns></returns>
         public string ValidateEmail()
         {
             //Pattern for valid email
-            string emailPattern = @"^[a-zA-Z0-9]+([.+_-][a-zA-Z0-9]+)*@[a-zA-Z0-9]+([.][a-zA-Z]{3})+([.][a-zA-Z]{2})?$";
-            Regex regex = new Regex(emailPattern);
+            string emailPattern = @"^[a-zA-Z0-9]+([.+_-][a-zA-Z0-9]+)*@[a-zA-Z0-9]+([.][a-zA-Z]{3})+([.][a-zA-Z]{2})?$";           
             while (true)
             {
                 //User input
                 Console.WriteLine("Enter the email of the user");
                 string email = Console.ReadLine();
-                //IF valid email
-                if (regex.IsMatch(email))
+                //If valid email
+                if (AreValid(email,emailPattern))
                 {
                     Console.WriteLine("Thank you for entering a valid email");
                     return email;
@@ -66,22 +76,21 @@ namespace UserRegistrationUsingLambdaExp
         }
 
         /// <summary>
-        /// Validates the mobile number.
+        /// UC 4 : Validates the mobile number.
         /// </summary>
         /// <returns></returns>
         public string ValidateMobileNumber()
         {
             //Pattern for valid mobile number
             //string mobileNumberPattern = @"^91[ ][6-9]{1}[0-9]{9}$";
-            string mobileNumberPattern = @"^[0-9]{2}[ ][0-9]{10}$";
-            Regex regex = new Regex(mobileNumberPattern);
+            string mobileNumberPattern = @"^[0-9]{2}[ ][0-9]{10}$";            
             while (true)
             {
                 //User input
                 Console.WriteLine("Enter the country code and mobile number of the user");
                 string mobileNumber = Console.ReadLine().ToString();
                 //IF valid mobile number
-                if (regex.IsMatch(mobileNumber))
+                if (AreValid(mobileNumber,mobileNumberPattern))
                 {
                     Console.WriteLine("Thank you for entering a valid mobile number");
                     return mobileNumber;
@@ -95,21 +104,20 @@ namespace UserRegistrationUsingLambdaExp
         }
 
         /// <summary>
-        /// Validates the password.
+        /// Uc 5-8 : Validates the password.
         /// </summary>
         /// <returns></returns>
         public string ValidatePassword()
         {
             //Pattern for valid password       
-            string passwordPattern = @"^(?=.*[A-Z])(?=.*[0-9])(?=.*[^0-9a-zA-Z])(?!.*[^0-9a-zA-Z].*[^0-9a-zA-Z]).{8,}$";
-            Regex regex = new Regex(passwordPattern);
+            string passwordPattern = @"^(?=.*[A-Z])(?=.*[0-9])(?=.*[^0-9a-zA-Z])(?!.*[^0-9a-zA-Z].*[^0-9a-zA-Z]).{8,}$";            
             while (true)
             {
                 //User input
                 Console.WriteLine("Enter the password");
                 string password = Console.ReadLine().ToString();
                 //IF valid password
-                if (regex.IsMatch(password))
+                if (AreValid(password,passwordPattern))
                 {
                     Console.WriteLine("Voila! You entered a strong password");
                     return password;
@@ -117,7 +125,7 @@ namespace UserRegistrationUsingLambdaExp
                 //If invalid password
                 else
                 {
-                    Console.WriteLine("Invalid password: It must contain at least one each of Upper case, number and special character and must be 8 chars long");
+                    Console.WriteLine("Invalid password: It must contain at least one each of Upper case, number and special character and must be 8 chars long\n");
                 }
             }
         }
@@ -137,15 +145,15 @@ namespace UserRegistrationUsingLambdaExp
             UserDetails userDetails = new UserDetails(firstName, lastName, email, mobileNumber, password);
             userDetailsList.Add(userDetails);
             Console.Clear();
-            Console.WriteLine("User Details:");
+            Console.WriteLine("User Details:\n");
             foreach (var v in userDetailsList)
             {
-                Console.WriteLine("First Name: " + v.firstName + "\nLast Name: " + v.lastName + "\nEmail: " + v.email + "\nMobile Number: " + v.mobileNumber + "\nPassword: " + v.password);
+                Console.WriteLine("First Name: " + v.firstName + "\nLast Name: " + v.lastName + "\nEmail: " + v.email + "\nMobile Number: " + v.mobileNumber + "\nPassword: " + v.password+"\n");
             }
         }
 
         /// <summary>
-        /// Checks the given email samples to give valid and invalid emails out.
+        /// UC 9 : Checks the given email samples to give valid and invalid emails out.
         /// </summary>
         public void CheckEmailSamples()
         {
@@ -156,21 +164,21 @@ namespace UserRegistrationUsingLambdaExp
             "abc@gmail.com.aa.au" };
             string emailPattern = @"^[a-zA-Z0-9]+([.+_-][a-zA-Z0-9]+)*[@][a-zA-Z0-9]+([.][a-zA-Z]{3})+([.][a-zA-Z]{2})?$";
             Regex regex = new Regex(emailPattern);
-            foreach (var sample in samples)
+
+            string[] validEmails = samples.Where(sample => regex.IsMatch(sample) == true).ToArray();
+            string[] invalidEmails = samples.Where(sample => regex.IsMatch(sample) == false).ToArray();
+            foreach(var v in validEmails)
             {
-                if (regex.IsMatch(sample))
-                {
-                    Console.WriteLine("Valid Email: " + sample);
-                }
-                else
-                {
-                    Console.WriteLine("Invalid email:" + sample);
-                }
+                Console.WriteLine("Valid Email: " + v);
             }
+            foreach(var v in invalidEmails)
+            {
+                Console.WriteLine("Invalid email:" + v);
+            }            
         }
 
         /// <summary>
-        /// Returns true if ... the pattern and userValue matches
+        /// UC 10 : Returns true if ... the pattern and userValue matches
         /// </summary>
         /// <param name="pattern">The pattern.</param>
         /// <param name="userValue">The user value.</param>
@@ -178,9 +186,9 @@ namespace UserRegistrationUsingLambdaExp
         ///   <c>true</c> if the specified pattern is valid; otherwise, <c>false</c>.
         /// </returns>
         /// <exception cref="UserRegistrationCustomException">Exception: Invalid Details Entered</exception>
-        public bool IsValid(string pattern, string userValue)
+        public static bool IsValid(string userValue, string pattern)
         {
-            if (Regex.IsMatch(userValue, pattern))
+            if (AreValid(userValue,pattern))
                 return true;
             else
             {

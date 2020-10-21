@@ -1,9 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="UserRegistrationCustomException.cs" company="Bridgelabz">
+//   Copyright © 2018 Company
+// </copyright>
+// <creator Name="Aseem Anand"/>
+// --------------------------------------------------------------------------------------------------------------------
 namespace UserRegistrationUsingLambdaExp
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Text;
     public class UserRegistrationCustomException : Exception
     {
         public enum ExceptionType
@@ -13,7 +18,7 @@ namespace UserRegistrationUsingLambdaExp
         public readonly ExceptionType type;
 
         /// <summary>
-        /// Created Custom Exception For User Reg Problem
+        /// UC 12 : Created Custom Exception For User Reg Problem
         /// </summary>
         /// <param name="type"></param>
         /// <param name="message"></param>
